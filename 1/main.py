@@ -7,7 +7,7 @@ from pathlib import Path
 # Чтение текста в строку
 def read_text(path: Path) -> str:
     text: str = ""
-    with open(path, "r") as file:
+    with open(path, "r", encoding="utf-8") as file:
         line: str = file.readline()
         while line != "":
             text += line
@@ -38,12 +38,20 @@ def main():
         wordsStatistics: dict[str, int] = word_statistics.get_words_statistics(text)
         print("##############################################")
         print("Статистика слов:\n", wordsStatistics, "\n##############################################")
-        wordsCount: int = word_statistics.get_total_words_count(wordsStatistics)
-        print("Общее количество слов:", wordsCount, "\n##############################################")
+        sentencesCount: int = word_statistics.get_sentences_count(text)
+        print("Количество предложений:", sentencesCount, "\n##############################################")
+       # wordsCount: int = word_statistics.get_total_words_count(wordsStatistics)
+       # print("Общее количество слов:", wordsCount, "\n##############################################")
         sizeStatistics: dict[int, int] = word_statistics.get_size_statistics(wordsStatistics)
         print("Распределение длин слов:", sizeStatistics, "\n##############################################")
         top10Words: dict[str, int] = word_statistics.get_top10_words(wordsStatistics)
+        avgLength, maxLength = word_statistics.get_avg_and_max_word_length(wordsStatistics)
+        print("Средняя длина слова:", round(avgLength, 2))
+        print("Максимальная длина слова:", maxLength, "\n##############################################")
         print("ТОП 10 частых слов :", top10Words, "\n##############################################")
+        top10Bigrams, top10Trigrams = word_statistics.get_top10_ngrams(text)
+        print("ТОП 10 биграмм:", top10Bigrams)
+        print("ТОП 10 триграмм:", top10Trigrams, "\n##############################################")
         
     except Exception as err:
         print("Error:", err)
