@@ -1,6 +1,11 @@
 import re
 from collections import Counter
 
+# Получение общего количества символов
+def get_text_length(text: str) -> tuple[int, int]:
+    l = len(text)
+    return (l, l - text.count(' '))
+
 # Получение общей статистики слов
 def get_words_statistics(text: str) -> dict[str, int]:
     allWords = re.findall(r'\w+', text)
@@ -10,6 +15,15 @@ def get_words_statistics(text: str) -> dict[str, int]:
          
     return wordsStat
 
+# Получение статистики букв
+def get_letters_statistics(text: str) -> dict[str, float]:
+    quantities: list = sorted(  dict( Counter(text.lower()) ).items(), key=lambda item: item[1])
+    l = len(text)
+    res: dict[str, float] = {}
+    for i in quantities:
+        res[i[0]] = i[1]/l
+    return res
+
 # Получение общего колличества слов
 def get_total_words_count(wordsStatistics: dict[str, int]) -> int:
     count: int = 0
@@ -17,6 +31,11 @@ def get_total_words_count(wordsStatistics: dict[str, int]) -> int:
         count += wordsStatistics[word]
     
     return count
+
+# Получение общего количества чисел
+def get_numbers_count(text: str) -> int:
+    count: int = 0
+    return len(re.findall(r"[+-]?[0-9]+", text))
 
 # Получение статистики размеров слов
 def get_size_statistics(wordsStatistics: dict[str, int]) -> dict[int, int]:
